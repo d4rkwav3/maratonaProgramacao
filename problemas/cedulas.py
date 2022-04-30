@@ -31,9 +31,6 @@ class Contador:
         v1 = f"{self.troco.get(1)} nota(s) de R$ 1"
         print(v100 + v50 + v20 + v10 + v5 + v2 + v1, end="")
 
-    def resetar_contagem(self):
-        notas = [100, 50, 20, 10, 5, 2, 1]
-
 valor = Contador()
 valor.contar_notas(int(input()))
 valor.visualizar_troco()
