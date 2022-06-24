@@ -36,8 +36,17 @@ class TimeInterval:
         self.__minute = minute
         self.__second = second
 
-    def set_hour(self, hour: int) -> None:
-        self.__hour = hour
+    def get_total_seconds(self) -> int:
+        return (self.__hour * 3600) + (self.__minute * 60) + self.__second
+
+    def get_hour(self) -> int:
+        return self.__hour
+
+    def get_minute(self) -> int:
+        return self.__minute
+
+    def get_second(self) -> int:
+        return self.__second
 
     def __str__(self) -> str:
         return f'{self.__hour}:{self.__minute}:{self.__second}'
@@ -46,8 +55,63 @@ class TimeInterval:
         if type(time) != TimeInterval:
             error_msg: str = "Type Error, use TimeInterval objects only!"
             raise TypeError(error_msg)
+        
+        hour, min, sec = time.get_hour(), time.get_minute(), time.get_second()
+        total_sec = (hour * 3600) + (min * 60) + sec
 
-test = TimeInterval(23, 55, 0)
-print(test)
-test.set_hour(0)
-print(test)
+        total_time = self.get_total_seconds() + total_sec
+
+        result_sec = ((total_time / 60) - (total_time // 60)) * 60
+        min1 = (total_time // 60)
+        result_min = ((min1 / 60) - (min1 // 60)) * 60
+        result_hour = total_time // 3600
+
+        time_result = "{:d}:{:.0f}:{:.0f}".format(result_hour if result_hour >= 10 else str(result_hour).zfill(1), result_min, result_sec)
+
+        return time_result
+
+    def __sub__(self, time):
+        if type(time) != TimeInterval:
+            error_msg: str = "Type Error, use TimeInterval objects only!"
+            raise TypeError(error_msg)
+        
+        hour, min, sec = time.get_hour(), time.get_minute(), time.get_second()
+        total_sec = (hour * 3600) + (min * 60) + sec
+
+        total_time = self.get_total_seconds() + (-total_sec)
+
+        result_sec = ((total_time / 60) - (total_time // 60)) * 60
+        min1 = (total_time // 60)
+        result_min = ((min1 / 60) - (min1 // 60)) * 60
+        result_hour = total_time // 3600
+
+        time_result = "{:d}:{:.0f}:{:.0f}".format(result_hour if result_hour >= 10 else str(result_hour).zfill(1), result_min, result_sec)
+
+        return time_result
+
+    def __mul__(self, number: int):
+        if type(number) != int:
+            error_msg: str = "TimeInterval can only be multiplied with integers"
+            raise TypeError(error_msg)
+
+        hour, min, sec = self.get_hour(), self.get_minute(), self.get_second()
+        total_sec = (hour * 3600) + (min * 60) + sec
+
+        total_time = self.get_total_seconds() * number
+
+        result_sec = ((total_time / 60) - (total_time // 60)) * 60
+        min1 = (total_time // 60)
+        result_min = ((min1 / 60) - (min1 // 60)) * 60
+        result_hour = total_time // 3600
+
+        time_result = "{:d}:{:.0f}:{:.0f}".format(result_hour if result_hour >= 10 else str(result_hour).zfill(1), result_min, result_sec)
+
+        return time_result        
+
+fti = TimeInterval(21, 58, 50)
+sti = TimeInterval(1, 45, 22)
+print(fti + sti)
+print(fti - sti)
+print(fti * 2)
+#error_testing = TimeInterval(0, 0, '0') #Ok!
+# TODO: Muito código sendo repetido, vou pensar em como fazer uma ou mais funções pra reduzir isso
