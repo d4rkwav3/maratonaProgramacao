@@ -1,6 +1,5 @@
 '''
 2.1.1.10 Python core syntax: LAB #1
-
 Scenario
     Create a class representing a time interval;
     the class should implement its own method for addition, subtraction on time interval class objects;
@@ -23,6 +22,22 @@ Hint #1
 
 Hint #2
     you can use the assert statement to validate if the output of the __str__ method applied to a time interval object equals the expected value.
+
+2.1.1.11 Python core syntax: LAB #2
+Scenario
+
+    Extend the class implementation prepared in the previous lab to support the addition and subtraction of integers to time interval objects;
+    to add an integer to a time interval object means to add seconds;
+    to subtract an integer from a time interval object means to remove seconds.
+
+
+    in the case when a special method receives an integer type argument, instead of a time interval object, create a new time interval object based on the integer value.
+
+Test data:
+
+    the time interval (tti) is hours=21, minutes=58, seconds=50
+    the expected result of addition (tti + 62) is 21:59:52
+    the expected result of subtraction (tti - 62) is 21:57:48
 '''
 
 class TimeInterval:
@@ -35,9 +50,10 @@ class TimeInterval:
         self.__hour = hour
         self.__minute = minute
         self.__second = second
+        self.__only_seconds = (self.__hour * 3600 if self.__hour > 0 else 0) + (self.__minute * 60 if self.__minute > 0 else 0) + self.__second
 
     def get_total_seconds(self) -> int:
-        return (self.__hour * 3600) + (self.__minute * 60) + self.__second
+        return self.__only_seconds
 
     def seconds_to_hours(self, total_seconds: int) -> str:
         result_sec = ((total_seconds / 60) - (total_seconds // 60)) * 60
@@ -61,26 +77,44 @@ class TimeInterval:
         return f'{hours.zfill(2)}:{minutes.zfill(2)}:{seconds.zfill(2)}'
 
     def __add__(self, time):
-        if type(time) != TimeInterval:
-            error_msg: str = "Type Error, use TimeInterval objects only!"
+        if type(time) == TimeInterval:
+            total_time = self.get_total_seconds() + time.get_total_seconds()
+            formatted_time = self.seconds_to_hours(total_time)
+            result = TimeInterval(int(formatted_time[0:2]), int(formatted_time[3:5]), int(formatted_time[6:8]))
+
+            return result
+
+        elif type(time) == int:
+            new_time = TimeInterval(0, 0, time)
+            total_time = self.get_total_seconds() + new_time.get_total_seconds()
+            formatted_time = self.seconds_to_hours(total_time)
+            result = TimeInterval(int(formatted_time[0:2]), int(formatted_time[3:5]), int(formatted_time[6:8]))
+
+            return result
+
+        else:
+            error_msg: str = "Type Error, use TimeInterval objects or integer number only!"
             raise TypeError(error_msg)
-
-        total_time = self.get_total_seconds() + time.get_total_seconds()
-        formatted_time = self.seconds_to_hours(total_time)
-        result = TimeInterval(int(formatted_time[0:2]), int(formatted_time[3:5]), int(formatted_time[6:8]))
-
-        return result
 
     def __sub__(self, time):
-        if type(time) != TimeInterval:
-            error_msg: str = "Type Error, use TimeInterval objects only!"
+        if type(time) == TimeInterval:
+            total_time = self.get_total_seconds() + (-time.get_total_seconds())
+            formatted_time = self.seconds_to_hours(total_time)
+            result = TimeInterval(int(formatted_time[0:2]), int(formatted_time[3:5]), int(formatted_time[6:8]))
+
+            return result
+
+        elif type(time) == int:
+            new_time = TimeInterval(0, 0, time)
+            total_time = self.get_total_seconds() + (-new_time.get_total_seconds())
+            formatted_time = self.seconds_to_hours(total_time)
+            result = TimeInterval(int(formatted_time[0:2]), int(formatted_time[3:5]), int(formatted_time[6:8]))
+
+            return result
+
+        else:
+            error_msg: str = "Type Error, use TimeInterval objects or integer number only!"
             raise TypeError(error_msg)
-
-        total_time = self.get_total_seconds() + (-time.get_total_seconds())
-        formatted_time = self.seconds_to_hours(total_time)
-        result = TimeInterval(int(formatted_time[0:2]), int(formatted_time[3:5]), int(formatted_time[6:8]))
-
-        return result
 
     def __mul__(self, number: int):
         if type(number) != int:
@@ -93,9 +127,12 @@ class TimeInterval:
 
         return result       
 
+#error_test = TimeInterval(0, 0, '0') #Ok!
 fti = TimeInterval(21, 58, 50)
 sti = TimeInterval(1, 45, 22)
 print(fti + sti)
 print(fti - sti)
 print(fti * 2)
-#error_test = TimeInterval(0, 0, '0') #Ok!
+tti = TimeInterval(21, 58, 50)
+print(tti + 62)
+print(tti - 62)
