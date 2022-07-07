@@ -6,3 +6,6 @@ A maratona ocorreu dia 26 de junho e fique em 9º lugar (num total de 118 partic
 ![Print da maratona](/maratona/maratona.png 'Print do Placar final!')  
 
 Ainda existem três problemas que não consegui resolver, irei continuar tentar até conseguir! 💪🏻
+
+![Certificado de participação](/maratona/certificado.png 'Certificado de Participação')
+
