@@ -24,3 +24,22 @@ Scenario
     Instantiate MFD1, MFD2 and MFD3 to demonstrate their abilities. All devices should be capable of serving generic feature sets.
 
 '''
+from abc import ABC, abstractclassmethod
+
+class Scanner(ABC):
+    @abstractclassmethod
+    def scan_document(self):
+        pass
+
+    @abstractclassmethod
+    def get_scanner_status(self):
+        pass
+
+class Printer(ABC):
+    @abstractclassmethod
+    def print_document(self):
+        pass
+
+    @abstractclassmethod
+    def get_printer_status(self):
+        pass
