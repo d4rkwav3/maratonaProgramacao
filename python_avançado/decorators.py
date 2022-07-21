@@ -24,10 +24,9 @@ from datetime import datetime as dt
 
 def show_time(function):
     def wrapper(*args, **kwargs):
-        ts = dt.now()
-        time = ts.strftime('%Y-%m-%d %H:%M:%S')
+        time = dt.now().strftime('%d-%m-%Y %H:%M:%S')
         print('{} performed at {}'.format(function.__name__, time))
-        func = function(*args, **kwargs)
+        func =function(*args, **kwargs)
         return func
     return wrapper
 
@@ -40,6 +39,6 @@ def soma (*args):
         else:
             continue
 
-    return print(somatorio)
+    print(somatorio)
 
-print(soma(1, 2, 3))
+soma(1, 2, 3)
