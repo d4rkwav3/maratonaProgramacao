@@ -21,3 +21,70 @@ Scenario
         trying to delete the account attribute containing a non-zero balance.
 
 '''
+class AccountException(AttributeError):
+    pass
+
+class BankAccount:
+    def __init__(self, accountnumber, initialbalance=0) -> None:
+        self.__bank_id: int = accountnumber
+        self.__balance: float = initialbalance
+
+    @property
+    def bank_id(self):
+        return self.__bank_id
+
+    @property
+    def balance(self):
+        return self.__balance
+
+    @bank_id.setter
+    def bank_id(self, number: int):
+        alarm = "Illegal action detected! Cannot change account number!!"
+        raise AccountException(alarm)
+
+    @balance.setter
+    def balance(self, amount: float):
+        if amount >= 100000:
+            print("\nSuspect activity detected! Fraud Agency notified.")
+            self.__balance = amount
+            print(f"\tYour current balance is R$ {amount:.2f}")
+        elif amount > 0 and amount < 100000:
+            self.__balance = amount
+            print(f"Your current balance is R$ {amount:.2f}")
+        elif amount < 0:
+            error = "insufficient balance to make this operation!"
+            raise AccountException(error)
+
+    @bank_id.deleter
+    def bank_id(self):
+        ac_num = self.__bank_id
+        if self.__balance > 0:
+            error = "Account balance not empty! Please withdraw all remaining values before account exclusion"
+            raise AccountException(error)
+        else:
+            self.__bank_id = None
+            print(f"Bank Account number {ac_num} is now permanently closed.")
+
+make_me_happy = BankAccount(123456, 0)
+
+print(f"You account is now avalible to use >> {make_me_happy.bank_id} is your account number")
+print(f"Your current balance is R$ {make_me_happy.balance:.2f}")
+
+make_me_happy.balance = 1000
+
+try:
+    make_me_happy.balance = -200
+except AccountException as ac:
+    print("\nTrying to deposit a negative number to account:\n\tResult: ", ac)
+
+try:
+    make_me_happy.bank_id = 654321
+except AccountException as ac:
+    print("\nTrying to change account number:\n\tResult: ", ac)
+
+make_me_happy.balance = 1000000
+
+try:
+    del make_me_happy.bank_id
+except AccountException as ac:
+    print("\nTrying to delete the bank_id attribute:\n\tResult: ", ac)
