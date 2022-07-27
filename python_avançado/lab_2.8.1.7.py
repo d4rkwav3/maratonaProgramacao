@@ -22,3 +22,26 @@ Your task is to :
     play with the cars by calling methods responsible for interaction with components.
 
 '''
+
+class Tires:
+    def __init__(self, size: int) -> None:
+        self.size = size
+    
+    def get_pressure(self, ready):
+        if type(ready) == str and ready == "pump":
+            print("Pressure is good!")
+        else:
+            print("Not looking good! Check your tires before use!")
+
+    def pump(self):
+        print ("Tires pumped! Ready for use.")
+
+class Engine:
+    def __init__(self, fuel, type) -> None:
+        self.fuel = fuel
+        self.type = type
+
+# pneu = Tires(15)
+# print(type(pneu.pump))
+# print(pneu.pump.__name__)
+# pneu.get_pressure(pneu.pump.__name__)
